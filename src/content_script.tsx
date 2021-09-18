@@ -3,31 +3,24 @@
 /* eslint-disable guard-for-in */
 /* eslint-disable no-await-in-loop */
 
-import filterImage from './filters/nsfw';
-import sleep from './util/sleep';
+import { FilterAllImagesOnPage, UnfilterAllImagesOnPage } from './filters/nsfw';
+import { getConfig } from './util/config';
 
-chrome.runtime.onMessage.addListener((msg) => {
-  console.log(msg);
-
-  // if (msg.color) {
-  //   console.log(`Receive color = ${msg.color}`);
-  //   document.body.style.backgroundColor = msg.color;
-  //   sendResponse(`Change color to ${msg.color}`);
-  // } else {
-  //   sendResponse('Color message is none.');
-  // }
+chrome.storage.onChanged.addListener((changes) => {
+  if (changes.images) {
+    if (changes.images.newValue) {
+      FilterAllImagesOnPage();
+    } else {
+      UnfilterAllImagesOnPage();
+    }
+  }
 });
 
 window.onload = async () => {
-  const images = [...document.querySelectorAll('img')];
-  for (const image in images) {
-    try {
-      console.log(await filterImage(images[image], 0.5));
-      await sleep(50);
-    } catch (err) {
-      console.log(err);
-      // Blank
-    }
+  const config = await getConfig();
+
+  if (config.images) {
+    FilterAllImagesOnPage();
   }
 };
 
