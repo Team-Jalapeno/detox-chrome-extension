@@ -8,6 +8,8 @@ import {
   FormGroup,
   FormHelperText,
   Switch,
+  Divider,
+  Grid,
 } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
@@ -15,6 +17,9 @@ const useStyles = makeStyles({
   root: {
     width: 326,
     height: 414,
+  },
+  grid: {
+    padding: 20,
   },
 });
 
@@ -83,16 +88,6 @@ const Popup = () => {
     videos: false,
   });
 
-  // useEffect(() => {
-  //   chrome.browserAction.setBadgeText({ text: count.toString() });
-  // }, [count]);
-
-  // useEffect(() => {
-  //   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-  //     setCurrentURL(tabs[0].url);
-  //   });
-  // }, []);
-
   const sliderOnChange = (event: object, value: number | number[]) => {
     setSliderValue(value);
   };
@@ -103,31 +98,49 @@ const Popup = () => {
 
   return (
     <div className={classes.root}>
-      <Typography gutterBottom>
-        What do you want to hide?
-      </Typography>
-      <Slider value={sliderValue} onChange={sliderOnChange} aria-labelledby="continuous-slider" />
-      <Typography gutterBottom>
-        What do you want to filter?
-      </Typography>
+      <Grid
+        container
+        direction="column"
+        justify="center"
+        alignItems="stretch"
+        spacing={2}
+        className={classes.grid}
+      >
+        <Grid item xs={12}>
+          <Typography gutterBottom>
+            What do you want to hide?
+          </Typography>
+          <Slider value={sliderValue} onChange={sliderOnChange} aria-labelledby="continuous-slider" />
+        </Grid>
 
-      <FormControl component="fieldset">
-        <FormGroup>
-          <FormControlLabel
-            control={<StyledSwitch checked={filters.text} onChange={filtersOnChange} name="text" />}
-            label="Text"
-          />
-          <FormControlLabel
-            control={<StyledSwitch checked={filters.images} onChange={filtersOnChange} name="images" />}
-            label="Images"
-          />
-          <FormControlLabel
-            control={<StyledSwitch checked={filters.videos} onChange={filtersOnChange} name="videos" />}
-            label="Videos"
-          />
-        </FormGroup>
-        <FormHelperText>Built with ♥ by Team</FormHelperText>
-      </FormControl>
+        <Grid item xs={12}>
+          <Divider />
+        </Grid>
+
+        <Grid item xs={12}>
+          <Typography gutterBottom>
+            What do you want to filter?
+          </Typography>
+
+          <FormControl component="fieldset">
+            <FormGroup>
+              <FormControlLabel
+                control={<StyledSwitch checked={filters.text} onChange={filtersOnChange} name="text" />}
+                label="Text"
+              />
+              <FormControlLabel
+                control={<StyledSwitch checked={filters.images} onChange={filtersOnChange} name="images" />}
+                label="Images"
+              />
+              <FormControlLabel
+                control={<StyledSwitch checked={filters.videos} onChange={filtersOnChange} name="videos" />}
+                label="Videos"
+              />
+            </FormGroup>
+            <FormHelperText>Built with ♥ by Team</FormHelperText>
+          </FormControl>
+        </Grid>
+      </Grid>
     </div>
   );
 };
