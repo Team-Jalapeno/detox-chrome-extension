@@ -2,6 +2,7 @@
 /* eslint-disable no-await-in-loop */
 import * as nsfwjs from 'nsfwjs';
 import { FilterResult } from '../types';
+import { CreateImageBlurOverlay, RemoveImageBlurOverlay } from '../util/overlay';
 import sleep from '../util/sleep';
 
 let model: nsfwjs.NSFWJS;
@@ -65,4 +66,27 @@ export async function filterImages(
   }
 
   return results;
+}
+
+export async function FilterAllImagesOnPage() {
+  const images = [...document.querySelectorAll('img')];
+  images.map(CreateImageBlurOverlay);
+  const promises = images.map(async (image) => {
+    try {
+      const result = await filterImage(image, 0.5);
+
+      if (!result.filter) {
+        RemoveImageBlurOverlay(image);
+      }
+    } catch (err) {
+      console.log(err);
+      // Blank
+    }
+  });
+  await Promise.all(promises);
+}
+
+export async function UnfilterAllImagesOnPage() {
+  const images = [...document.querySelectorAll('img')];
+  images.map(RemoveImageBlurOverlay);
 }

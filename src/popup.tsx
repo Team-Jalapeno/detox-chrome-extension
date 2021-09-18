@@ -18,6 +18,7 @@ import {
   createMuiTheme,
   ThemeProvider,
 } from '@material-ui/core/styles';
+import { getConfig, setConfig } from './util/config';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -241,17 +242,20 @@ const Popup = () => {
   });
 
   const sliderOnChange = (event: object, value: number | number[]) => {
+    if (sliderValue !== value) {
+      setConfig({ level: value });
+    }
     setSliderValue(value);
-    chrome.storage.sync.set({ level: value });
   };
 
   const filtersOnChange = (event: { target: { name: string, checked: boolean } }) => {
     setFilters({ ...filters, [event.target.name]: event.target.checked });
-    chrome.storage.sync.set({ [event.target.name]: event.target.checked });
+    setConfig({ [event.target.name]: event.target.checked });
   };
 
   useEffect(() => {
-    chrome.storage.sync.get(['userid', 'level', 'text', 'videos', 'images'], (items) => {
+    const setFromStorage = async () => {
+      const items = await getConfig();
       const {
         text, images, videos, level,
       } = items;
@@ -261,7 +265,9 @@ const Popup = () => {
         videos,
       });
       setSliderValue(level);
-    });
+    };
+
+    setFromStorage();
   }, []);
 
   return (
