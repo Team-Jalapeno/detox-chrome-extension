@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "DeTox",
+  "name": "Detox",
   "description": "Keep your browsing free from sensitive content.",
   "version": "1.0",
   "options_ui": {

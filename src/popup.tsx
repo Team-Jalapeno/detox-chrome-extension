@@ -19,7 +19,22 @@ const useStyles = makeStyles({
     height: 414,
   },
   grid: {
-    padding: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 20,
+  },
+  logo: {
+    width: 60,
+  },
+  center: {
+    textAlign: 'center',
+  },
+  width100: {
+    width: '100%',
+  },
+  logoFont: {
+    fontFamily: '\'Pacifico\', cursive',
+    marginTop: '-4px',
   },
 });
 
@@ -105,9 +120,41 @@ const StyledSwitch = withStyles((theme) => ({
   />
 ));
 
+const Circle = ({ color }: { color: string }) => (
+  <div style={{
+    padding: 5,
+    marginTop: 4,
+    display: 'inline-block',
+    backgroundColor: color,
+    borderRadius: '50%',
+    width: 2,
+    height: 2,
+  }}
+  />
+);
+
+const marks = [
+  {
+    value: 0,
+    label: <Circle color="green" />,
+  },
+  {
+    value: 33.333,
+    label: <Circle color="#f7d26d" />,
+  },
+  {
+    value: 66.666,
+    label: <Circle color="#e02d57" />,
+  },
+  {
+    value: 99.999,
+    label: <Circle color="red" />,
+  },
+];
+
 const Popup = () => {
   const classes = useStyles();
-  const [sliderValue, setSliderValue] = useState<number | number[]>(50);
+  const [sliderValue, setSliderValue] = useState<number | number[]>(33.333);
   const [filters, setFilters] = useState<{
     text: boolean,
     images: boolean,
@@ -137,10 +184,35 @@ const Popup = () => {
         className={classes.grid}
       >
         <Grid item xs={12}>
+          <Grid
+            container
+            spacing={1}
+            justify="center"
+            alignItems="center"
+          >
+            <Grid item>
+              <img src="/icon.png" alt="" className={classes.logo} />
+            </Grid>
+            <Grid item>
+              <Typography variant="h4" className={classes.logoFont}>Detox</Typography>
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid item xs={12} />
+
+        <Grid item xs={12}>
           <Typography gutterBottom>
-            What do you want to hide?
+            Choose how you want your content filtered.
           </Typography>
-          <StyledSlider value={sliderValue} onChange={sliderOnChange} aria-labelledby="continuous-slider" />
+          <StyledSlider
+            value={sliderValue}
+            onChange={sliderOnChange}
+            step={33.333}
+            max={99.999}
+            aria-labelledby="continuous-slider"
+            marks={marks}
+          />
         </Grid>
 
         <Grid item xs={12}>
@@ -149,10 +221,10 @@ const Popup = () => {
 
         <Grid item xs={12}>
           <Typography gutterBottom>
-            What do you want to filter?
+            What kind of content do you want to filter?
           </Typography>
 
-          <FormControl component="fieldset">
+          <FormControl component="fieldset" className={classes.width100}>
             <FormGroup>
               <FormControlLabel
                 control={<StyledSwitch checked={filters.text} onChange={filtersOnChange} name="text" />}
@@ -167,7 +239,7 @@ const Popup = () => {
                 label="Videos"
               />
             </FormGroup>
-            <FormHelperText>Built with ♥ by Team</FormHelperText>
+            <FormHelperText className={classes.center}>Built with ♥ by Team</FormHelperText>
           </FormControl>
         </Grid>
       </Grid>
