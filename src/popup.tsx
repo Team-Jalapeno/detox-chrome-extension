@@ -19,8 +19,6 @@ import {
   ThemeProvider,
 } from '@material-ui/core/styles';
 
-import { nanoid } from 'nanoid';
-
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 300,
@@ -241,32 +239,30 @@ const Popup = () => {
     images: true,
     videos: true,
   });
-  const [config, setConfig] = useState<{
-    userid: string
-  }>({
-    userid: ''
-  });
-  useEffect(() => {
-
-    let uid = nanoid(16);
-    chrome.storage.sync.get(['userid'], function (items) {
-      //new user
-      if (!items.userid) {
-        chrome.storage.sync.set({ userid: uid });
-        setConfig({ userid: uid });
-      } else {
-        setConfig({ userid: items.userid })
-      }
-    });
-  }, [])
 
   const sliderOnChange = (event: object, value: number | number[]) => {
     setSliderValue(value);
+    chrome.storage.sync.set({ level: value });
   };
 
   const filtersOnChange = (event: { target: { name: string, checked: boolean } }) => {
     setFilters({ ...filters, [event.target.name]: event.target.checked });
+    chrome.storage.sync.set({ [event.target.name]: event.target.checked });
   };
+
+  useEffect(() => {
+    chrome.storage.sync.get(['userid', 'level', 'text', 'videos', 'images'], (items) => {
+      const {
+        text, images, videos, level,
+      } = items;
+      setFilters({
+        text,
+        images,
+        videos,
+      });
+      setSliderValue(level);
+    });
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
