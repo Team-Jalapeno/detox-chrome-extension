@@ -10,15 +10,21 @@ import {
   Switch,
   Divider,
   Grid,
+  Paper,
 } from '@material-ui/core';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { nanoid } from 'nanoid'
+import {
+  makeStyles,
+  withStyles,
+  createMuiTheme,
+  ThemeProvider,
+} from '@material-ui/core/styles';
 
+import { nanoid } from 'nanoid';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: 300,
-    height: 414,
+    backgroundColor: '#f3f3f3',
   },
   grid: {
     paddingLeft: 20,
@@ -26,7 +32,7 @@ const useStyles = makeStyles({
     paddingTop: 20,
   },
   logo: {
-    width: 60,
+    width: 40,
   },
   center: {
     textAlign: 'center',
@@ -38,19 +44,84 @@ const useStyles = makeStyles({
     fontFamily: '\'Pacifico\', cursive',
     marginTop: '-4px',
   },
+  paper: {
+    padding: theme.spacing(2),
+  },
+}));
+
+const useStylesSlider = makeStyles({
+  root: (props: any) => ({
+    color: props.color,
+    height: 8,
+    width: '95%',
+  }),
 });
+
+function getColor(value: number | number[]) {
+  let color = '';
+  switch (value) {
+    case 33.333: {
+      color = '#fc7d1a';
+      break;
+    }
+
+    case 66.666: {
+      color = '#ffc30b';
+      break;
+    }
+
+    case 99.999: {
+      color = '#97bc62';
+      break;
+    }
+
+    default: {
+      color = 'red';
+      break;
+    }
+  }
+
+  return color;
+}
+
+function getInfo(value: number | number[]) {
+  let info = '';
+  switch (value) {
+    case 33.333: {
+      info = 'moderate';
+      break;
+    }
+
+    case 66.666: {
+      info = 'high';
+      break;
+    }
+
+    case 99.999: {
+      info = 'extreme';
+      break;
+    }
+
+    default: {
+      info = 'low';
+      break;
+    }
+  }
+
+  return info;
+}
 
 const StyledSlider = withStyles({
   root: {
-    color: '#52af77',
+    color: '#97bc62',
     height: 8,
   },
   thumb: {
-    height: 24,
-    width: 24,
+    height: 20,
+    width: 20,
     backgroundColor: '#fff',
     border: '2px solid currentColor',
-    marginTop: -8,
+    marginTop: -6,
     marginLeft: -12,
     '&:focus, &:hover, &$active': {
       boxShadow: 'inherit',
@@ -68,7 +139,23 @@ const StyledSlider = withStyles({
     height: 8,
     borderRadius: 4,
   },
-})(Slider);
+})(({ classes, ...props }: any) => {
+  const customProps = {
+    color: getColor(props.value),
+  };
+
+  const customClasses = useStylesSlider(customProps);
+  return (
+    <Slider
+      classes={{
+        ...classes,
+        root: customClasses.root,
+      }}
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...props}
+    />
+  );
+});
 
 const StyledSwitch = withStyles((theme) => ({
   root: {
@@ -83,13 +170,13 @@ const StyledSwitch = withStyles((theme) => ({
       transform: 'translateX(16px)',
       color: theme.palette.common.white,
       '& + $track': {
-        backgroundColor: '#52d869',
+        backgroundColor: '#97bc62',
         opacity: 1,
         border: 'none',
       },
     },
     '&$focusVisible $thumb': {
-      color: '#52d869',
+      color: '#97bc62',
       border: '6px solid #fff',
     },
   },
@@ -122,49 +209,37 @@ const StyledSwitch = withStyles((theme) => ({
   />
 ));
 
-const Circle = ({ color }: { color: string }) => (
-  <div style={{
-    padding: 5,
-    marginTop: 4,
-    display: 'inline-block',
-    backgroundColor: color,
-    borderRadius: '50%',
-    width: 2,
-    height: 2,
-  }}
-  />
-);
+// const Circle = ({ color }: { color: string }) => (
+//   <div style={{
+//     padding: 5,
+//     marginTop: 6,
+//     display: 'inline-block',
+//     backgroundColor: color,
+//     borderRadius: '50%',
+//     width: 2,
+//     height: 2,
+//   }}
+//   />
+// );
 
-const marks = [
-  {
-    value: 0,
-    label: <Circle color="green" />,
+const theme = createMuiTheme({
+  typography: {
+    fontSize: 13,
+    fontFamily: '\'IBM Plex Sans\', sans-serif',
   },
-  {
-    value: 33.333,
-    label: <Circle color="#f7d26d" />,
-  },
-  {
-    value: 66.666,
-    label: <Circle color="#e02d57" />,
-  },
-  {
-    value: 99.999,
-    label: <Circle color="red" />,
-  },
-];
+});
 
 const Popup = () => {
   const classes = useStyles();
-  const [sliderValue, setSliderValue] = useState<number | number[]>(33.333);
+  const [sliderValue, setSliderValue] = useState<number | number[]>(66.666);
   const [filters, setFilters] = useState<{
     text: boolean,
     images: boolean,
     videos: boolean,
   }>({
-    text: false,
-    images: false,
-    videos: false,
+    text: true,
+    images: true,
+    videos: true,
   });
   const [config, setConfig] = useState<{
     userid: string
@@ -175,18 +250,13 @@ const Popup = () => {
 
     let uid = nanoid(16);
     chrome.storage.sync.get(['userid'], function (items) {
-      console.log(items);
-
       //new user
-      if (items.userid === undefined) {
+      if (!items.userid) {
         chrome.storage.sync.set({ userid: uid });
-        console.log('generated new user id')
         setConfig({ userid: uid });
-      }
-      else {
+      } else {
         setConfig({ userid: items.userid })
       }
-      console.log('read from config')
     });
   }, [])
 
@@ -199,76 +269,104 @@ const Popup = () => {
   };
 
   return (
-    <div className={classes.root}>
-      <Grid
-        container
-        direction="column"
-        justify="center"
-        alignItems="stretch"
-        spacing={2}
-        className={classes.grid}
-      >
-        <Grid item xs={12}>
-          <Grid
-            container
-            spacing={1}
-            justify="center"
-            alignItems="center"
-          >
-            <Grid item>
-              <img src="/icon.png" alt="" className={classes.logo} />
-            </Grid>
-            <Grid item>
-              <Typography variant="h4" className={classes.logoFont}>Detox</Typography>
+    <ThemeProvider theme={theme}>
+      <div className={classes.root}>
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="stretch"
+          spacing={1}
+          className={classes.grid}
+        >
+          <Grid item xs={12}>
+            <Grid
+              container
+              spacing={1}
+              alignItems="center"
+            >
+              <Grid item>
+                <img src="/icon.png" alt="" className={classes.logo} />
+              </Grid>
+              <Grid item>
+                <Typography variant="h5" className={classes.logoFont}>Detox</Typography>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
 
-        <Grid item xs={12} />
+          <Grid item xs={12} />
 
-        <Grid item xs={12}>
-          <Typography gutterBottom>
-            Choose how you want your content filtered.
-          </Typography>
-          <StyledSlider
-            value={sliderValue}
-            onChange={sliderOnChange}
-            step={33.333}
-            max={99.999}
-            aria-labelledby="continuous-slider"
-            marks={marks}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Divider />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Typography gutterBottom>
-            What kind of content do you want to filter?
-          </Typography>
-
-          <FormControl component="fieldset" className={classes.width100}>
-            <FormGroup>
-              <FormControlLabel
-                control={<StyledSwitch checked={filters.text} onChange={filtersOnChange} name="text" />}
-                label="Text"
+          <Grid item xs={12}>
+            <Typography gutterBottom>
+              Choose how you want your content filtered.
+            </Typography>
+            <Grid container justify="center" alignItems="center">
+              <StyledSlider
+                value={sliderValue}
+                onChange={sliderOnChange}
+                step={33.333}
+                max={99.999}
+                aria-labelledby="continuous-slider"
               />
-              <FormControlLabel
-                control={<StyledSwitch checked={filters.images} onChange={filtersOnChange} name="images" />}
-                label="Images"
-              />
-              <FormControlLabel
-                control={<StyledSwitch checked={filters.videos} onChange={filtersOnChange} name="videos" />}
-                label="Videos"
-              />
-            </FormGroup>
-            <FormHelperText className={classes.center}>Built with ♥ by Team</FormHelperText>
-          </FormControl>
+            </Grid>
+            <Paper
+              className={classes.paper}
+              elevation={3}
+              style={{
+                border: `2px solid ${getColor(sliderValue)}`,
+              }}
+            >
+              <Typography>
+                This level represents
+                {' '}
+                {getInfo(sliderValue)}
+                .
+              </Typography>
+            </Paper>
+          </Grid>
+
+          <Grid
+            item
+            xs={12}
+            style={{
+              margin: 3,
+            }}
+          >
+            <Divider />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Typography gutterBottom>
+              What kind of content do you want to filter?
+            </Typography>
+
+            <FormControl component="fieldset" className={classes.width100}>
+              <FormGroup>
+                <FormControlLabel
+                  control={<StyledSwitch checked={filters.text} onChange={filtersOnChange} name="text" />}
+                  label="Text"
+                />
+                <FormControlLabel
+                  control={<StyledSwitch checked={filters.images} onChange={filtersOnChange} name="images" />}
+                  label="Images"
+                />
+                <FormControlLabel
+                  control={<StyledSwitch checked={filters.videos} onChange={filtersOnChange} name="videos" />}
+                  label="Videos"
+                />
+              </FormGroup>
+              <FormHelperText className={classes.center}>
+                Built with
+                {' '}
+                <span style={{ color: 'red' }}>♥</span>
+                {' '}
+                by Team WhiteHatSr
+              </FormHelperText>
+            </FormControl>
+          </Grid>
         </Grid>
-      </Grid>
-    </div>
+      </div>
+    </ThemeProvider>
   );
 };
 
