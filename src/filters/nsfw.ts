@@ -20,7 +20,7 @@ async function scanImage(element: HTMLImageElement) {
 }
 
 export default async function filterImage(
-  image: HTMLImageElement, threshold: Number,
+  image: HTMLImageElement, threshold: number,
 ): Promise<FilterResult> {
   const width = image.clientWidth;
   if (width < 50) {
@@ -42,7 +42,8 @@ export default async function filterImage(
     };
   }
 
-  if (highest.probability < threshold) {
+  console.log(highest.probability, (1 - threshold / 100));
+  if (highest.probability < (1 - threshold / 100)) {
     return {
       filter: false,
       reason: 'The image is below the given threshold.',
@@ -68,25 +69,28 @@ export async function filterImages(
   return results;
 }
 
-export async function FilterAllImagesOnPage() {
+export async function UnfilterAllImagesOnPage() {
+  const images = [...document.querySelectorAll('img')];
+  images.map(RemoveImageBlurOverlay);
+}
+
+export async function FilterAllImagesOnPage(threshold?: number) {
+  if (threshold === 0) {
+    UnfilterAllImagesOnPage();
+    return;
+  }
   const images = [...document.querySelectorAll('img')];
   images.map(CreateImageBlurOverlay);
   const promises = images.map(async (image) => {
     try {
-      const result = await filterImage(image, 0.5);
+      const result = await filterImage(image, threshold || 0.5);
 
       if (!result.filter) {
         RemoveImageBlurOverlay(image);
       }
     } catch (err) {
       console.log(err);
-      // Blank
     }
   });
   await Promise.all(promises);
-}
-
-export async function UnfilterAllImagesOnPage() {
-  const images = [...document.querySelectorAll('img')];
-  images.map(RemoveImageBlurOverlay);
 }
