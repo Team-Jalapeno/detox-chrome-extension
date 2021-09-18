@@ -15,13 +15,43 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   root: {
-    width: 326,
+    width: 300,
     height: 414,
   },
   grid: {
     padding: 20,
   },
 });
+
+const StyledSlider = withStyles({
+  root: {
+    color: '#52af77',
+    height: 8,
+  },
+  thumb: {
+    height: 24,
+    width: 24,
+    backgroundColor: '#fff',
+    border: '2px solid currentColor',
+    marginTop: -8,
+    marginLeft: -12,
+    '&:focus, &:hover, &$active': {
+      boxShadow: 'inherit',
+    },
+  },
+  active: {},
+  valueLabel: {
+    left: 'calc(-50% + 4px)',
+  },
+  track: {
+    height: 8,
+    borderRadius: 4,
+  },
+  rail: {
+    height: 8,
+    borderRadius: 4,
+  },
+})(Slider);
 
 const StyledSwitch = withStyles((theme) => ({
   root: {
@@ -110,7 +140,7 @@ const Popup = () => {
           <Typography gutterBottom>
             What do you want to hide?
           </Typography>
-          <Slider value={sliderValue} onChange={sliderOnChange} aria-labelledby="continuous-slider" />
+          <StyledSlider value={sliderValue} onChange={sliderOnChange} aria-labelledby="continuous-slider" />
         </Grid>
 
         <Grid item xs={12}>
