@@ -31,8 +31,9 @@ window.onload = async () => {
   }
 };
 
-function nodeInsertedCallback(event: any) {
-  console.log(event.target.querySelectorAll('img'));
+function nodeInsertedCallback() {
+  // Node inserted callback
+  // console.log(event.target.querySelectorAll('img'));
 }
 
 document.addEventListener('DOMNodeInserted', nodeInsertedCallback);
