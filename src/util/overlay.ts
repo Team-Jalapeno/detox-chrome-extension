@@ -19,18 +19,10 @@ export function RemoveBlurAllImages() {
 
 export function CreateImageBlurOverlay(element: HTMLImageElement) {
   const el = element;
-  el.dataset.previousFilter = el.style.filter;
-  el.dataset.bluredBy = 'detox';
   el.style.filter = 'blur(16px)';
 }
 
 export function RemoveImageBlurOverlay(element: HTMLImageElement) {
   const el = element;
-
-  if (el.dataset.previousFilter) {
-    el.style.filter = el.dataset.previousFilter;
-  } else {
-    el.style.filter = 'none';
-  }
-  el.dataset.bluredBy = undefined;
+  el.style.removeProperty('filter');
 }

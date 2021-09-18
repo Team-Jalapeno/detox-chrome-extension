@@ -6,12 +6,20 @@
 import { FilterAllImagesOnPage, UnfilterAllImagesOnPage } from './filters/nsfw';
 import { getConfig } from './util/config';
 
-chrome.storage.onChanged.addListener((changes) => {
+chrome.storage.onChanged.addListener(async (changes) => {
+  const config = await getConfig();
+
   if (changes.images) {
     if (changes.images.newValue) {
-      FilterAllImagesOnPage();
+      FilterAllImagesOnPage(config.level);
     } else {
       UnfilterAllImagesOnPage();
+    }
+  }
+
+  if (changes.level) {
+    if (config.images) {
+      FilterAllImagesOnPage(changes.level.newValue);
     }
   }
 });
@@ -20,7 +28,7 @@ window.onload = async () => {
   const config = await getConfig();
 
   if (config.images) {
-    FilterAllImagesOnPage();
+    FilterAllImagesOnPage(config.level);
   }
 };
 
