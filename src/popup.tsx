@@ -172,6 +172,7 @@ const Popup = () => {
     userid: ''
   });
   useEffect(() => {
+
     let uid = nanoid(16);
     chrome.storage.sync.get(['userid'], function (items) {
       console.log(items);
