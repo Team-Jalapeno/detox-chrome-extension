@@ -10,13 +10,18 @@ import {
   Switch,
   Divider,
   Grid,
+  Paper,
 } from '@material-ui/core';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import {
+  makeStyles,
+  withStyles,
+  createMuiTheme,
+  ThemeProvider,
+} from '@material-ui/core/styles';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: 300,
-    height: 414,
   },
   grid: {
     paddingLeft: 20,
@@ -24,7 +29,7 @@ const useStyles = makeStyles({
     paddingTop: 20,
   },
   logo: {
-    width: 60,
+    width: 40,
   },
   center: {
     textAlign: 'center',
@@ -36,7 +41,10 @@ const useStyles = makeStyles({
     fontFamily: '\'Pacifico\', cursive',
     marginTop: '-4px',
   },
-});
+  paper: {
+    padding: theme.spacing(2),
+  },
+}));
 
 const useStylesSlider = makeStyles({
   root: (props: any) => ({
@@ -45,6 +53,60 @@ const useStylesSlider = makeStyles({
     width: '95%',
   }),
 });
+
+function getColor(value: number | number[]) {
+  let color = '';
+  switch (value) {
+    case 33.333: {
+      color = '#fc7d1a';
+      break;
+    }
+
+    case 66.666: {
+      color = '#ffc30b';
+      break;
+    }
+
+    case 99.999: {
+      color = '#97bc62';
+      break;
+    }
+
+    default: {
+      color = 'red';
+      break;
+    }
+  }
+
+  return color;
+}
+
+function getInfo(value: number | number[]) {
+  let info = '';
+  switch (value) {
+    case 33.333: {
+      info = 'moderate';
+      break;
+    }
+
+    case 66.666: {
+      info = 'high';
+      break;
+    }
+
+    case 99.999: {
+      info = 'extreme';
+      break;
+    }
+
+    default: {
+      info = 'low';
+      break;
+    }
+  }
+
+  return info;
+}
 
 const StyledSlider = withStyles({
   root: {
@@ -76,30 +138,9 @@ const StyledSlider = withStyles({
   },
 })(({ classes, ...props }: any) => {
   const customProps = {
-    color: '',
+    color: getColor(props.value),
   };
 
-  switch (props.value) {
-    case 33.333: {
-      customProps.color = '#fc7d1a';
-      break;
-    }
-
-    case 66.666: {
-      customProps.color = '#ffc30b';
-      break;
-    }
-
-    case 99.999: {
-      customProps.color = '#97bc62';
-      break;
-    }
-
-    default: {
-      customProps.color = 'red';
-      break;
-    }
-  }
   const customClasses = useStylesSlider(customProps);
   return (
     <Slider
@@ -178,6 +219,12 @@ const StyledSwitch = withStyles((theme) => ({
 //   />
 // );
 
+const theme = createMuiTheme({
+  typography: {
+    fontSize: 13,
+  },
+});
+
 const Popup = () => {
   const classes = useStyles();
   const [sliderValue, setSliderValue] = useState<number | number[]>(33.333);
@@ -200,77 +247,98 @@ const Popup = () => {
   };
 
   return (
-    <div className={classes.root}>
-      <Grid
-        container
-        direction="column"
-        justify="center"
-        alignItems="stretch"
-        spacing={2}
-        className={classes.grid}
-      >
-        <Grid item xs={12}>
+    <ThemeProvider theme={theme}>
+      <div className={classes.root}>
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="stretch"
+          spacing={1}
+          className={classes.grid}
+        >
+          <Grid item xs={12}>
+            <Grid
+              container
+              spacing={1}
+              alignItems="center"
+            >
+              <Grid item>
+                <img src="/icon.png" alt="" className={classes.logo} />
+              </Grid>
+              <Grid item>
+                <Typography variant="h5" className={classes.logoFont}>Detox</Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12} />
+
+          <Grid item xs={12}>
+            <Typography gutterBottom>
+              Choose how you want your content filtered.
+            </Typography>
+            <Grid container justify="center" alignItems="center">
+              <StyledSlider
+                value={sliderValue}
+                onChange={sliderOnChange}
+                step={33.333}
+                max={99.999}
+                aria-labelledby="continuous-slider"
+              />
+            </Grid>
+            <Paper
+              className={classes.paper}
+              elevation={3}
+              style={{
+                border: `2px solid ${getColor(sliderValue)}`,
+              }}
+            >
+              <Typography>
+                This level represents
+                {' '}
+                {getInfo(sliderValue)}
+                .
+              </Typography>
+            </Paper>
+          </Grid>
+
           <Grid
-            container
-            spacing={1}
-            justify="center"
-            alignItems="center"
+            item
+            xs={12}
+            style={{
+              margin: 3,
+            }}
           >
-            <Grid item>
-              <img src="/icon.png" alt="" className={classes.logo} />
-            </Grid>
-            <Grid item>
-              <Typography variant="h4" className={classes.logoFont}>Detox</Typography>
-            </Grid>
+            <Divider />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Typography gutterBottom>
+              What kind of content do you want to filter?
+            </Typography>
+
+            <FormControl component="fieldset" className={classes.width100}>
+              <FormGroup>
+                <FormControlLabel
+                  control={<StyledSwitch checked={filters.text} onChange={filtersOnChange} name="text" />}
+                  label="Text"
+                />
+                <FormControlLabel
+                  control={<StyledSwitch checked={filters.images} onChange={filtersOnChange} name="images" />}
+                  label="Images"
+                />
+                <FormControlLabel
+                  control={<StyledSwitch checked={filters.videos} onChange={filtersOnChange} name="videos" />}
+                  label="Videos"
+                />
+              </FormGroup>
+              <FormHelperText className={classes.center}>Built with ♥ by Team</FormHelperText>
+            </FormControl>
           </Grid>
         </Grid>
-
-        <Grid item xs={12} />
-
-        <Grid item xs={12}>
-          <Typography gutterBottom>
-            Choose how you want your content filtered.
-          </Typography>
-          <Grid container justify="center" alignItems="center">
-            <StyledSlider
-              value={sliderValue}
-              onChange={sliderOnChange}
-              step={33.333}
-              max={99.999}
-              aria-labelledby="continuous-slider"
-            />
-          </Grid>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Divider />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Typography gutterBottom>
-            What kind of content do you want to filter?
-          </Typography>
-
-          <FormControl component="fieldset" className={classes.width100}>
-            <FormGroup>
-              <FormControlLabel
-                control={<StyledSwitch checked={filters.text} onChange={filtersOnChange} name="text" />}
-                label="Text"
-              />
-              <FormControlLabel
-                control={<StyledSwitch checked={filters.images} onChange={filtersOnChange} name="images" />}
-                label="Images"
-              />
-              <FormControlLabel
-                control={<StyledSwitch checked={filters.videos} onChange={filtersOnChange} name="videos" />}
-                label="Videos"
-              />
-            </FormGroup>
-            <FormHelperText className={classes.center}>Built with ♥ by Team</FormHelperText>
-          </FormControl>
-        </Grid>
-      </Grid>
-    </div>
+      </div>
+    </ThemeProvider>
   );
 };
 
