@@ -36,7 +36,8 @@
                     ".tsx"
                 ]
             }
-        ]
+        ],
+        "no-console": "off"
     },
     "settings": {
         "import/resolver": {
