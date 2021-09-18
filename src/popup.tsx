@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import {
   Slider,
@@ -12,6 +12,8 @@ import {
   Grid,
 } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { nanoid } from 'nanoid'
+
 
 const useStyles = makeStyles({
   root: {
@@ -164,6 +166,28 @@ const Popup = () => {
     images: false,
     videos: false,
   });
+  const [config, setConfig] = useState<{
+    userid: string
+  }>({
+    userid: ''
+  });
+  useEffect(() => {
+    let uid = nanoid(16);
+    chrome.storage.sync.get(['userid'], function (items) {
+      console.log(items);
+
+      //new user
+      if (items.userid === undefined) {
+        chrome.storage.sync.set({ userid: uid });
+        console.log('generated new user id')
+        setConfig({ userid: uid });
+      }
+      else {
+        setConfig({ userid: items.userid })
+      }
+      console.log('read from config')
+    });
+  }, [])
 
   const sliderOnChange = (event: object, value: number | number[]) => {
     setSliderValue(value);
