@@ -1,26 +1,9 @@
 import { nanoid } from 'nanoid';
 
-function polling() {
-  // console.log("polling");
-  setTimeout(polling, 1000 * 30);
-}
-
-polling();
 const detoxReport = () => {
-  chrome.runtime.sendMessage('hello');
-  console.log('selected');
-  // $(window).mouseenter(function (event) {
-  //   $(event.target).addClass("el-selection");
-  // });
-
-  // $(window).mouseleave(function (event) {
-  //   $(event.target).removeClass("el-selection");
-  // });
-
-  // $(window).click(function (event) {
-  //   console.log("selected: ", event.target);
-  //   return false;
-  // });
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.tabs.sendMessage(tabs[0].id!, { data: 'start-overlay' });
+  });
 };
 
 chrome.contextMenus.create({
