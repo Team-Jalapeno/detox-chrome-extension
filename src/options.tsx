@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
+import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
 
 const Options = () => {
   const [color, setColor] = useState<string>();
@@ -11,13 +11,13 @@ const Options = () => {
     // stored in chrome.storage.
     chrome.storage.sync.get(
       {
-        favoriteColor: "red",
+        favoriteColor: 'red',
         likesColor: true,
       },
       (items) => {
         setColor(items.favoriteColor);
         setLike(items.likesColor);
-      }
+      },
     );
   }, []);
 
@@ -30,12 +30,12 @@ const Options = () => {
       },
       () => {
         // Update status to let user know options were saved.
-        setStatus("Options saved.");
+        setStatus('Options saved.');
         const id = setTimeout(() => {
           setStatus(undefined);
         }, 1000);
         return () => clearTimeout(id);
-      }
+      },
     );
   };
 
@@ -64,7 +64,7 @@ const Options = () => {
         </label>
       </div>
       <div>{status}</div>
-      <button onClick={saveOptions}>Save</button>
+      <button type="button" onClick={saveOptions}>Save</button>
     </>
   );
 };
@@ -73,5 +73,5 @@ ReactDOM.render(
   <React.StrictMode>
     <Options />
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById('root'),
 );
