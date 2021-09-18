@@ -22,6 +22,7 @@ import {
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 300,
+    backgroundColor: '#f3f3f3',
   },
   grid: {
     paddingLeft: 20,
@@ -222,20 +223,21 @@ const StyledSwitch = withStyles((theme) => ({
 const theme = createMuiTheme({
   typography: {
     fontSize: 13,
+    fontFamily: '\'IBM Plex Sans\', sans-serif',
   },
 });
 
 const Popup = () => {
   const classes = useStyles();
-  const [sliderValue, setSliderValue] = useState<number | number[]>(33.333);
+  const [sliderValue, setSliderValue] = useState<number | number[]>(66.666);
   const [filters, setFilters] = useState<{
     text: boolean,
     images: boolean,
     videos: boolean,
   }>({
-    text: false,
-    images: false,
-    videos: false,
+    text: true,
+    images: true,
+    videos: true,
   });
 
   const sliderOnChange = (event: object, value: number | number[]) => {
@@ -333,7 +335,13 @@ const Popup = () => {
                   label="Videos"
                 />
               </FormGroup>
-              <FormHelperText className={classes.center}>Built with ♥ by Team</FormHelperText>
+              <FormHelperText className={classes.center}>
+                Built with
+                {' '}
+                <span style={{ color: 'red' }}>♥</span>
+                {' '}
+                by Team WhiteHatSr
+              </FormHelperText>
             </FormControl>
           </Grid>
         </Grid>
