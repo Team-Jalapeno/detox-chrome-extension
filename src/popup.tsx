@@ -38,17 +38,25 @@ const useStyles = makeStyles({
   },
 });
 
+const useStylesSlider = makeStyles({
+  root: (props: any) => ({
+    color: props.color,
+    height: 8,
+    width: '95%',
+  }),
+});
+
 const StyledSlider = withStyles({
   root: {
-    color: '#52af77',
+    color: '#97bc62',
     height: 8,
   },
   thumb: {
-    height: 24,
-    width: 24,
+    height: 20,
+    width: 20,
     backgroundColor: '#fff',
     border: '2px solid currentColor',
-    marginTop: -8,
+    marginTop: -6,
     marginLeft: -12,
     '&:focus, &:hover, &$active': {
       boxShadow: 'inherit',
@@ -66,7 +74,44 @@ const StyledSlider = withStyles({
     height: 8,
     borderRadius: 4,
   },
-})(Slider);
+})(({ classes, ...props }: any) => {
+  const customProps = {
+    color: '',
+  };
+
+  switch (props.value) {
+    case 33.333: {
+      customProps.color = '#fc7d1a';
+      break;
+    }
+
+    case 66.666: {
+      customProps.color = '#ffc30b';
+      break;
+    }
+
+    case 99.999: {
+      customProps.color = '#97bc62';
+      break;
+    }
+
+    default: {
+      customProps.color = 'red';
+      break;
+    }
+  }
+  const customClasses = useStylesSlider(customProps);
+  return (
+    <Slider
+      classes={{
+        ...classes,
+        root: customClasses.root,
+      }}
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...props}
+    />
+  );
+});
 
 const StyledSwitch = withStyles((theme) => ({
   root: {
@@ -81,13 +126,13 @@ const StyledSwitch = withStyles((theme) => ({
       transform: 'translateX(16px)',
       color: theme.palette.common.white,
       '& + $track': {
-        backgroundColor: '#52d869',
+        backgroundColor: '#97bc62',
         opacity: 1,
         border: 'none',
       },
     },
     '&$focusVisible $thumb': {
-      color: '#52d869',
+      color: '#97bc62',
       border: '6px solid #fff',
     },
   },
@@ -120,37 +165,18 @@ const StyledSwitch = withStyles((theme) => ({
   />
 ));
 
-const Circle = ({ color }: { color: string }) => (
-  <div style={{
-    padding: 5,
-    marginTop: 4,
-    display: 'inline-block',
-    backgroundColor: color,
-    borderRadius: '50%',
-    width: 2,
-    height: 2,
-  }}
-  />
-);
-
-const marks = [
-  {
-    value: 0,
-    label: <Circle color="green" />,
-  },
-  {
-    value: 33.333,
-    label: <Circle color="#f7d26d" />,
-  },
-  {
-    value: 66.666,
-    label: <Circle color="#e02d57" />,
-  },
-  {
-    value: 99.999,
-    label: <Circle color="red" />,
-  },
-];
+// const Circle = ({ color }: { color: string }) => (
+//   <div style={{
+//     padding: 5,
+//     marginTop: 6,
+//     display: 'inline-block',
+//     backgroundColor: color,
+//     borderRadius: '50%',
+//     width: 2,
+//     height: 2,
+//   }}
+//   />
+// );
 
 const Popup = () => {
   const classes = useStyles();
@@ -205,14 +231,15 @@ const Popup = () => {
           <Typography gutterBottom>
             Choose how you want your content filtered.
           </Typography>
-          <StyledSlider
-            value={sliderValue}
-            onChange={sliderOnChange}
-            step={33.333}
-            max={99.999}
-            aria-labelledby="continuous-slider"
-            marks={marks}
-          />
+          <Grid container justify="center" alignItems="center">
+            <StyledSlider
+              value={sliderValue}
+              onChange={sliderOnChange}
+              step={33.333}
+              max={99.999}
+              aria-labelledby="continuous-slider"
+            />
+          </Grid>
         </Grid>
 
         <Grid item xs={12}>
