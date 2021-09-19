@@ -362,7 +362,7 @@ const Popup = () => {
                 {' '}
                 <span style={{ color: 'red' }}>♥</span>
                 {' '}
-                by Team WhiteHatSr
+                by Team Jalapeno
               </FormHelperText>
             </FormControl>
           </Grid>
