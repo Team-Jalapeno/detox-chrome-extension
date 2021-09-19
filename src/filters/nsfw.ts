@@ -2,7 +2,12 @@
 /* eslint-disable no-await-in-loop */
 import * as nsfwjs from 'nsfwjs';
 import { FilterResult } from '../types';
-import { CreateBlurOverlay, RemoveBlurOverlay } from '../util/overlay';
+import {
+  AddPopover,
+  CreateBlurOverlay,
+  RemoveBlurOverlay,
+  RemovePopover,
+} from '../util/overlay';
 import sleep from '../util/sleep';
 
 let model: nsfwjs.NSFWJS;
@@ -87,6 +92,11 @@ export async function FilterAllImagesOnPage(threshold?: number) {
 
       if (!result.filter) {
         RemoveBlurOverlay(image);
+      } else {
+        RemovePopover(image);
+        setTimeout(() => {
+          AddPopover(image, result.reason);
+        }, 1000);
       }
     } catch (err) {
       console.log(err);

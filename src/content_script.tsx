@@ -148,8 +148,10 @@ window.onload = async () => {
   const page = window.location.href;
 
   if (page.match(/https:\/\/(www\.|)instagram\.com\/p\/\w+/)) {
-    if (config.text) {
-      InstagramTextFilter(config.level);
-    }
+    setTimeout(() => {
+      if (config.text) {
+        InstagramTextFilter(config.level);
+      }
+    }, 1000);
   }
 };
