@@ -11,6 +11,7 @@ import { FilterAllImagesOnPage, UnfilterAllImagesOnPage } from './filters/nsfw';
 import { } from './util/overlay';
 import { getConfig } from './util/config';
 import popoverCss from './util/popoverCss';
+import filterCommunityReports from './filters/community';
 
 jQuery.fn.extend({
   getPath() {
@@ -43,22 +44,6 @@ jQuery.fn.extend({
     return path;
   },
 });
-
-const getReport = async () => {
-  const response = await axios.get('https://eng-hack.herokuapp.com/community/report', {
-    params: {
-      url: window.location.href,
-    },
-  });
-
-  // console.log(response.data);
-
-  response.data.reports.forEach((item: any) => {
-    console.log('element is');
-    console.log(document.querySelector(item.selector));
-    console.log(item);
-  });
-};
 
 const reportDetox = async (propName: string, path: string, selection: JQuery<HTMLImageElement>) => {
   // console.log($(event.target).prop('tagName'));
@@ -154,6 +139,8 @@ chrome.storage.onChanged.addListener(async (changes) => {
       InstagramTextFilter(changes.level.newValue);
     }
   }
+
+  filterCommunityReports(config.text, config.images);
 });
 
 window.onload = async () => {
@@ -174,5 +161,5 @@ window.onload = async () => {
       }
     }, 1000);
   }
-  getReport();
+  filterCommunityReports(config.text, config.images);
 };
