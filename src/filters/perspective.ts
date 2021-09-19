@@ -5,7 +5,7 @@ function getParamsOverTheshold(data: any, threshold: number) {
   const filtered: {[type: string]: number} = {};
 
   Object.keys(data).forEach((param) => {
-    if (data[param] > (1 - (threshold / 100))) {
+    if (data[param] > (1.5 - ((threshold / 200) + 0.5))) {
       filtered[param] = data[param];
     }
   });

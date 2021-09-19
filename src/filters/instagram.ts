@@ -11,13 +11,12 @@ export default async function InstagramTextFilter(threshold: number) {
     return InstagramTextUnFilter();
   }
   const elements = [...document.getElementsByClassName('ZyFrc')] as HTMLElement[];
-  const responses = await Promise.all(
-    elements.map((el) => checkPerspectiveApi(el.innerText, threshold)),
+  return Promise.all(
+    elements.map(async (el) => {
+      const response = await checkPerspectiveApi(el.innerText, threshold);
+      if (response.filter) {
+        CreateBlurOverlay(el, 4);
+      }
+    }),
   );
-
-  for (let i = 0; i < elements.length; i += 1) {
-    if (responses[i].filter) {
-      CreateBlurOverlay(elements[i], 4);
-    }
-  }
 }
