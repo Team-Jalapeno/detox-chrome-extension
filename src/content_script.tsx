@@ -4,6 +4,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-undef */
 
+import axios from 'axios';
 import InstagramTextFilter, { InstagramTextUnFilter } from './filters/instagram';
 import { FilterAllImagesOnPage, UnfilterAllImagesOnPage } from './filters/nsfw';
 import { getConfig } from './util/config';
@@ -64,22 +65,24 @@ const startOverlay = () => {
         contentType = 'image';
       }
 
-      const config = await getConfig();
-      $.ajax({
-        type: 'POST',
-
-        url: 'https://eng-hack.herokuapp.com/community/report', // server URL (with https)
-        data: {
+      try {
+        const config = await getConfig();
+        const response = await axios.post('https://eng-hack.herokuapp.com/community/report', {
           url: window.location.href,
           contentType,
           vote: 0,
           selector: path,
           userId: config.userid,
-        },
-        success() {
-          alert('successfully reported');
-        },
-      });
+        });
+        console.log(response.data);
+
+        if (response.data.error) {
+          alert(response.data.msg);
+        }
+      } catch (e) {
+        console.log('error');
+        console.log(e);
+      }
     });
 
     return false;
