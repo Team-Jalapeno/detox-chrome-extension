@@ -33,6 +33,7 @@
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
 - [Usage](#usage)
+  - [Community Flagging](#community-flagging)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
@@ -49,6 +50,8 @@
 </p>
 
 On the chrome-extension popup, you can choose the strictness with which you want `Detox` to filter text and media on the webpage. You can also choose the type of content you want to filter by enabling/disabling switches on the extension. By default, text, images, and videos will be enabled.
+
+`Detox` is made *by the community, for the community*. With the help of **community flagging**, any user can flag specific content that they believe is inappropriate. Content that is flagged by a considerable portion of the community will be filtered for users of the extension.
 
 > `Detox` only uses Open-Source APIs and libraries. Image content detection is performed on the client-side. Text is sent to the server (the [source code](https://github.com/Team-Jalapeno/detox-backend) for which is also Open Source). However, the text sent to our servers is not stored and not linked to a user in any way.
 
