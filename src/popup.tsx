@@ -87,22 +87,22 @@ function getInfo(value: number | number[]) {
   let info = '';
   switch (value) {
     case 33.333: {
-      info = 'moderate';
+      info = 'low';
       break;
     }
 
     case 66.666: {
-      info = 'high';
+      info = 'moderate';
       break;
     }
 
     case 99.999: {
-      info = 'extreme';
+      info = 'high';
       break;
     }
 
     default: {
-      info = 'low';
+      info = 'off';
       break;
     }
   }
