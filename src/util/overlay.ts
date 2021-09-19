@@ -19,7 +19,6 @@ export function RemoveBlurAllImages() {
 
 export function CreateBlurOverlay(element: HTMLElement, blurValue?: number) {
   const el = element;
-  console.log(blurValue);
   el.style.filter = `blur(${blurValue || 50}px)`;
   el.style.userSelect = 'none';
 }
