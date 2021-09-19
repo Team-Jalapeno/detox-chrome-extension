@@ -117,7 +117,15 @@ To stop the extension, move the slider to the extreme left, or toggle all the sw
 
 To test the extension, you can visit our [Instagram Post](https://www.instagram.com/p/CQnJy2jLwEb/). As of 27 July 2021, the "text filtering" feature of the extension works only on Instagram posts and comments. However, the "image filtering" feature works for on all websites.
 
-> Note: The text filtering feature is supported only on Instagram posts, but it will soon be available on popular social media websites such as Facebook, Reddit, Discord, etc.
+> Note: The automated text filtering feature is supported only on Instagram posts, but it will soon be available on popular social media websites such as Facebook, Reddit, Discord, etc.
+
+### Community Flagging
+
+`Detox` also supports **community flagging**. If users find something that's offensive or inappropriate on any website (including text or images), they may report it. Now, if anyone else with the extension were to open the same page, the content that had been flagged will be blurred for them too!
+
+With the help of this feature, the community can flag inappropriate content that the AI was unable to recognize.
+
+**To flag content**, the user can `right-click` on a page, and click the "Report to Detox" option in the Chrome right-click menu. Then, the user will be able to see boxes around the items that they're hovering over, so they can click on what they want to flag. That's it! Once the flag request is received by our servers, an alert will be displayed.
 
 <!-- ROADMAP -->
 ## Roadmap
