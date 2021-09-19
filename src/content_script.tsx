@@ -5,38 +5,94 @@
 /* eslint-disable no-undef */
 
 import axios from 'axios';
+import getCssSelector from 'css-selector-generator';
 import InstagramTextFilter, { InstagramTextUnFilter } from './filters/instagram';
 import { FilterAllImagesOnPage, UnfilterAllImagesOnPage } from './filters/nsfw';
+import { } from './util/overlay';
 import { getConfig } from './util/config';
 import popoverCss from './util/popoverCss';
 
-function getCSSPath(el: any, callback: any) {
-  let fullPath = '';
-  // eslint-disable-next-line no-shadow
-  const cssPathFn = (el: any, callback: any) => {
-    let elPath = '';
+jQuery.fn.extend({
+  getPath() {
+    let path; let
+      node: any = this;
+    while (node.length) {
+      console.log('node is');
+      console.log(node);
+      const realNode = node[0]; let
+        { name } = realNode;
+      if (!name) break;
+      name = name.toLowerCase();
 
-    elPath = $(el).prop('tagName').toLowerCase();
+      const parent = node.parent();
 
-    if (typeof $(el).attr('id') !== 'undefined') {
-      elPath = `${elPath}#${$(el).attr('id')}`;
+      const sameTagSiblings = parent.children(name);
+      if (sameTagSiblings.length > 1) {
+        const allSiblings = parent.children();
+        const index = allSiblings.index(realNode) + 1;
+        if (index > 1) {
+          name += `:nth-child(${index})`;
+        }
+      }
+
+      path = name + (path ? `>${path}` : '');
+      node = parent;
     }
+    console.log('inside path fn');
+    console.log(path);
+    return path;
+  },
+});
 
-    if (typeof $(el).attr('class') !== 'undefined') {
-      elPath = `${elPath}.${$(el).attr('class')!.split(' ').join('.')}`;
-    }
+const getReport = async () => {
+  const response = await axios.get('https://eng-hack.herokuapp.com/community/report', {
+    params: {
+      url: window.location.href,
+    },
+  });
 
-    fullPath = `${elPath} ${fullPath}`;
+  // console.log(response.data);
 
-    if (typeof $(el).parent().prop('tagName') !== 'undefined') {
-      cssPathFn($(el).parent(), callback);
+  response.data.reports.forEach((item: any) => {
+    console.log('element is');
+    console.log(document.querySelector(item.selector));
+    console.log(item);
+  });
+};
+
+const reportDetox = async (propName: string, path: string, selection: JQuery<HTMLImageElement>) => {
+  // console.log($(event.target).prop('tagName'));
+
+  // const selection = $(event.target).find('img');
+  let contentType = 'text';
+  console.log(path);
+  // console.log($(event.target).find('img'));
+  if (selection.length > 0 || propName === 'IMG') {
+    // its an image
+    contentType = 'image';
+  }
+
+  try {
+    const config = await getConfig();
+    const response = await axios.post('https://eng-hack.herokuapp.com/community/report', {
+      url: window.location.href,
+      contentType,
+      vote: 0,
+      selector: path,
+      userId: config.userid,
+    });
+    console.log(response.data);
+
+    if (response.data.error) {
+      alert(response.data.msg);
     } else {
-      callback(fullPath);
+      alert('successfully reported');
     }
-  };
-
-  cssPathFn(el, callback);
-}
+  } catch (e) {
+    console.log('error');
+    console.log(e);
+  }
+};
 
 const startOverlay = () => {
   $('*').not('body, html').hover(function (e) {
@@ -53,39 +109,8 @@ const startOverlay = () => {
     });
     $(window).off('click');
 
-    getCSSPath(event.target, async (path: string) => {
-      // console.log(path);
-      console.log($(event.target).prop('tagName'));
-
-      const selection = $(event.target).find('img');
-      let contentType = 'text';
-
-      // console.log($(event.target).find('img'));
-      if (selection.length > 0 || $(event.target).prop('tagName') === 'IMG') {
-        // its an image
-        contentType = 'image';
-      }
-
-      try {
-        const config = await getConfig();
-        const response = await axios.post('https://eng-hack.herokuapp.com/community/report', {
-          url: window.location.href,
-          contentType,
-          vote: 0,
-          selector: path,
-          userId: config.userid,
-        });
-        console.log(response.data);
-
-        if (response.data.error) {
-          alert(response.data.msg);
-        }
-      } catch (e) {
-        console.log('error');
-        console.log(e);
-      }
-    });
-
+    const selPath = getCssSelector((event.target as any), { selectors: ['tag', 'class'] });
+    reportDetox($(event.target).prop('tagName'), selPath, $(event.target).find('img'));
     return false;
   });
 };
@@ -149,4 +174,5 @@ window.onload = async () => {
       }
     }, 1000);
   }
+  getReport();
 };
