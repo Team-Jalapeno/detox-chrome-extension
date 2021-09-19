@@ -45,6 +45,8 @@
 
 `Detox` is an AI-powered chrome-extension that lets you control what you see when you are browsing the web. With the help of `Detox`, you can choose to blur out obscene images, videos, and text, and concentrate on your work/scroll through social media peacefully.
 
+Learn more about `Detox` on our [website](https://detox-extension.webflow.io/)!
+
 <p align="center">
     <img src="./assets/demo-screenshot.png" width="250" style="text-align: center" />
 </p>
