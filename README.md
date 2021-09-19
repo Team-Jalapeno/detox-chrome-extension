@@ -7,7 +7,7 @@
   <h3 align="center">detox-chrome-extension</h3>
 
   <p align="center">
-    Keep your browsing free from sensitive content.
+    Keep your browsing free from inappropriate content.
     <br />
     <a href="https://github.com/Team-Jalapeno/detox-chrome-extension/"><strong>Explore the docs »</strong></a>
     <br />
