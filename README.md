@@ -1,6 +1,6 @@
 <!-- PROJECT LOGO -->
 <p align="center">
-  <a href="/">
+  <a href="https://github.com/Team-Jalapeno/detox-chrome-extension/">
     <img src="./public/icon.png" alt="Logo" width="80">
   </a>
 
@@ -9,14 +9,14 @@
   <p align="center">
     Keep your browsing free from sensitive content.
     <br />
-    <a href="/"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/Team-Jalapeno/detox-chrome-extension/"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="/">View Demo</a>
+    <a href="https://github.com/Team-Jalapeno/detox-chrome-extension/">View Demo</a>
     ·
-    <a href="https://github.com/Team-WhiteHatSr/detox-chrome-extension/issues">Report Bug</a>
+    <a href="https://github.com/Team-Jalapeno/detox-chrome-extension/issues">Report Bug</a>
     ·
-    <a href="https://github.com/Team-WhiteHatSr/detox-chrome-extension/issues">Request Feature</a>
+    <a href="https://github.com/Team-Jalapeno/detox-chrome-extension/issues">Request Feature</a>
   </p>
 </p>
 
@@ -50,7 +50,7 @@
 
 On the chrome-extension popup, you can choose the strictness with which you want `Detox` to filter text and media on the webpage. You can also choose the type of content you want to filter by enabling/disabling switches on the extension. By default, text, images, and videos will be enabled.
 
-> `Detox` only uses Open-Source APIs and libraries. Image content detection is performed on the client-side. Text is sent to the server (the [source code](https://github.com/Team-WhiteHatSr/detox-backend) for which is also Open Source). However, the text sent to our servers is not stored and not linked to a user in any way.
+> `Detox` only uses Open-Source APIs and libraries. Image content detection is performed on the client-side. Text is sent to the server (the [source code](https://github.com/Team-Jalapeno/detox-backend) for which is also Open Source). However, the text sent to our servers is not stored and not linked to a user in any way.
 
 ### Built With
 
@@ -74,7 +74,7 @@ To get a local copy up and running follow these simple steps.
  
 1. Clone the repo.
 ```sh
-git clone https://github.com/Team-WhiteHatSr/detox-chrome-extension.git
+git clone https://github.com/Team-Jalapeno/detox-chrome-extension.git
 cd detox-chrome-extension
 ```
 2. Install NPM packages.
@@ -117,7 +117,7 @@ To stop the extension, move the slider to the extreme left, or toggle all the sw
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/Team-WhiteHatSr/detox-chrome-extension/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/Team-Jalapeno/detox-chrome-extension/issues) for a list of proposed features (and known issues).
 
 
 
