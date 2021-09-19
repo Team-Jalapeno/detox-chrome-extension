@@ -20,23 +20,33 @@ export function RemoveBlurAllImages() {
   }
 }
 
-export function CreateBlurOverlay(element: HTMLElement, blurValue?: number) {
+export function AddPopover(element: HTMLElement, reason?: string) {
+  const el = element;
+  if (!(el as any)._tippy) {
+    tippy(el, {
+      content: reason || 'Blurred by Detox!',
+    });
+  }
+}
+
+export function RemovePopover(element: HTMLElement) {
+  const el = element;
+  if ((el as any)._tippy) {
+    (el as any)._tippy.destroy();
+  }
+}
+
+export function CreateBlurOverlay(element: HTMLElement, blurValue?: number, reason?: string) {
   const el = element;
   el.style.filter = `blur(${blurValue || 50}px)`;
   el.style.userSelect = 'none';
 
-  if (!(el as any)._tippy) {
-    tippy(el, {
-      content: 'Blurred by Detox!',
-    });
-  }
+  AddPopover(el, reason);
 }
 
 export function RemoveBlurOverlay(element: HTMLElement) {
   const el = element;
   el.style.removeProperty('filter');
   el.style.userSelect = 'auto';
-  if ((el as any)._tippy) {
-    (el as any)._tippy.destroy();
-  }
+  RemovePopover(el);
 }
