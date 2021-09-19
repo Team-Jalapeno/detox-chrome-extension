@@ -12,7 +12,7 @@ import sleep from '../util/sleep';
 
 let model: nsfwjs.NSFWJS;
 
-nsfwjs.load('https://s3.ap-south-1.amazonaws.com/cdn.dyte.in/lib/').then((loaded) => {
+nsfwjs.load('https://d1zv2aa70wpiur.cloudfront.net/tfjs_quant_nsfw_mobilenet/').then((loaded) => {
   model = loaded;
 });
 
