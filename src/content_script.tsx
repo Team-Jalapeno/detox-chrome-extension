@@ -4,7 +4,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-undef */
 
-import { InstagramTextFilter } from './filters/instagram';
+import InstagramTextFilter, { InstagramTextUnFilter } from './filters/instagram';
 import { FilterAllImagesOnPage, UnfilterAllImagesOnPage } from './filters/nsfw';
 import { getConfig } from './util/config';
 
@@ -94,9 +94,21 @@ chrome.storage.onChanged.addListener(async (changes) => {
     }
   }
 
+  if (changes.text) {
+    if (changes.text.newValue) {
+      InstagramTextFilter(config.level);
+    } else {
+      InstagramTextUnFilter();
+    }
+  }
+
   if (changes.level) {
     if (config.images) {
       FilterAllImagesOnPage(changes.level.newValue);
+    }
+
+    if (config.text) {
+      InstagramTextFilter(changes.level.newValue);
     }
   }
 });
