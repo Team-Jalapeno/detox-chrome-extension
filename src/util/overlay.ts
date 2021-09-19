@@ -17,12 +17,15 @@ export function RemoveBlurAllImages() {
   }
 }
 
-export function CreateImageBlurOverlay(element: HTMLImageElement) {
+export function CreateBlurOverlay(element: HTMLElement, blurValue?: number) {
   const el = element;
-  el.style.filter = 'blur(50px)';
+  console.log(blurValue);
+  el.style.filter = `blur(${blurValue || 50}px)`;
+  el.style.userSelect = 'none';
 }
 
-export function RemoveImageBlurOverlay(element: HTMLImageElement) {
+export function RemoveBlurOverlay(element: HTMLElement) {
   const el = element;
   el.style.removeProperty('filter');
+  el.style.userSelect = 'auto';
 }
