@@ -3,7 +3,7 @@ export function BlurAllImages() {
   style.id = 'detox-blur-image';
   style.appendChild(document.createTextNode(`
   img {
-    filter: blur(16px);
+    filter: blur(50px);
   }
   `));
 
@@ -19,7 +19,7 @@ export function RemoveBlurAllImages() {
 
 export function CreateImageBlurOverlay(element: HTMLImageElement) {
   const el = element;
-  el.style.filter = 'blur(16px)';
+  el.style.filter = 'blur(50px)';
 }
 
 export function RemoveImageBlurOverlay(element: HTMLImageElement) {
