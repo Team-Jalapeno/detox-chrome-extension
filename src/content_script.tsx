@@ -4,6 +4,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-undef */
 
+import { InstagramTextFilter } from './filters/instagram';
 import { FilterAllImagesOnPage, UnfilterAllImagesOnPage } from './filters/nsfw';
 import { getConfig } from './util/config';
 
@@ -105,5 +106,13 @@ window.onload = async () => {
 
   if (config.images) {
     FilterAllImagesOnPage(config.level);
+  }
+
+  const page = window.location.href;
+
+  if (page.match(/https:\/\/(www\.|)instagram\.com\/p\/\w+/)) {
+    if (config.text) {
+      InstagramTextFilter(config.level);
+    }
   }
 };
