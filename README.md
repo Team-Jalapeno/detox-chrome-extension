@@ -1,6 +1,6 @@
 <!-- PROJECT LOGO -->
 <p align="center">
-  <a href="https://dyte.in">
+  <a href="/">
     <img src="./public/icon.png" alt="Logo" width="80">
   </a>
 
@@ -9,10 +9,10 @@
   <p align="center">
     Keep your browsing free from sensitive content.
     <br />
-    <a href="https://docs.dyte.in"><strong>Explore the docs »</strong></a>
+    <a href="/"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://app.dyte.in">View Demo</a>
+    <a href="/">View Demo</a>
     ·
     <a href="https://github.com/Team-WhiteHatSr/detox-chrome-extension/issues">Report Bug</a>
     ·
