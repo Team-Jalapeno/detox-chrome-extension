@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 /* eslint-disable no-continue */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable guard-for-in */
@@ -11,7 +12,7 @@ import { FilterAllImagesOnPage, UnfilterAllImagesOnPage } from './filters/nsfw';
 import { } from './util/overlay';
 import { getConfig } from './util/config';
 import popoverCss from './util/popoverCss';
-import filterCommunityReports from './filters/community';
+import filterCommunityReports, { blurFlaggedItem } from './filters/community';
 
 jQuery.fn.extend({
   getPath() {
@@ -47,7 +48,6 @@ jQuery.fn.extend({
 
 const reportDetox = async (propName: string, path: string, selection: JQuery<HTMLImageElement>) => {
   // console.log($(event.target).prop('tagName'));
-
   // const selection = $(event.target).find('img');
   let contentType = 'text';
   console.log(path);
@@ -71,6 +71,7 @@ const reportDetox = async (propName: string, path: string, selection: JQuery<HTM
     if (response.data.error) {
       alert(response.data.msg);
     } else {
+      blurFlaggedItem({ selector: path, contentType }, config.text, config.images);
       alert('The content was flagged successfully!');
     }
   } catch (e) {
@@ -88,8 +89,8 @@ const startOverlay = () => {
     e.stopPropagation();
   });
 
-  $(window).click((event) => {
-    $('*').not('body,html').hover(function () {
+  $(window).click((event: any) => {
+    $('*').not('body,html').on('mouseenter', function () {
       $(this).css('border', 'none');
     });
     $(window).off('click');
