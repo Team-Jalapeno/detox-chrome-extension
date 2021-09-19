@@ -71,7 +71,7 @@ const reportDetox = async (propName: string, path: string, selection: JQuery<HTM
     if (response.data.error) {
       alert(response.data.msg);
     } else {
-      alert('successfully reported');
+      alert('The content was flagged successfully!');
     }
   } catch (e) {
     console.log('error');
