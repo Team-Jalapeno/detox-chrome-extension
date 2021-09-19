@@ -131,6 +131,14 @@ chrome.storage.onChanged.addListener(async (changes) => {
 });
 
 window.onload = async () => {
+  const popperJs = document.createElement('script');
+  popperJs.src = 'https://unpkg.com/@popperjs/core@2';
+  document.body.appendChild(popperJs);
+
+  const tippyJs = document.createElement('script');
+  tippyJs.src = 'https://unpkg.com/tippy.js@6';
+  document.body.appendChild(tippyJs);
+
   const config = await getConfig();
 
   if (config.images) {
