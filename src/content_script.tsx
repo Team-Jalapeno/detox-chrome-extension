@@ -50,17 +50,31 @@ const startOverlay = () => {
       $(this).css('border', 'none');
     });
     $(window).off('click');
-    getCSSPath(event.target, (path: string) => {
-      console.log(path);
 
+    getCSSPath(event.target, async (path: string) => {
+      // console.log(path);
+      console.log($(event.target).prop('tagName'));
+
+      const selection = $(event.target).find('img');
+      let contentType = 'text';
+
+      // console.log($(event.target).find('img'));
+      if (selection.length > 0 || $(event.target).prop('tagName') === 'IMG') {
+        // its an image
+        contentType = 'image';
+      }
+
+      const config = await getConfig();
       $.ajax({
         type: 'POST',
 
-        url: '', // server URL (with https)
+        url: 'https://eng-hack.herokuapp.com/community/report', // server URL (with https)
         data: {
-          userid: '',
-          csspath: path,
           url: window.location.href,
+          contentType,
+          vote: 0,
+          selector: path,
+          userId: config.userid,
         },
         success() {
           alert('successfully reported');
