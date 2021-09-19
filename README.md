@@ -114,6 +114,8 @@ To stop the extension, move the slider to the extreme left, or toggle all the sw
     The screenshot above shows the extension in action.
 </p>
 
+To test the extension, you can visit our [Instagram Post](https://www.instagram.com/p/CQnJy2jLwEb/). As of 27 July 2021, the "text filtering" feature of the extension works only on Instagram posts and comments. However, the "image filtering" feature works for on all websites.
+
 <!-- ROADMAP -->
 ## Roadmap
 
