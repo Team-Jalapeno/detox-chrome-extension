@@ -8,6 +8,7 @@ import axios from 'axios';
 import InstagramTextFilter, { InstagramTextUnFilter } from './filters/instagram';
 import { FilterAllImagesOnPage, UnfilterAllImagesOnPage } from './filters/nsfw';
 import { getConfig } from './util/config';
+import popoverCss from './util/popoverCss';
 
 function getCSSPath(el: any, callback: any) {
   let fullPath = '';
@@ -131,13 +132,7 @@ chrome.storage.onChanged.addListener(async (changes) => {
 });
 
 window.onload = async () => {
-  const popperJs = document.createElement('script');
-  popperJs.src = 'https://unpkg.com/@popperjs/core@2';
-  document.body.appendChild(popperJs);
-
-  const tippyJs = document.createElement('script');
-  tippyJs.src = 'https://unpkg.com/tippy.js@6';
-  document.body.appendChild(tippyJs);
+  popoverCss();
 
   const config = await getConfig();
 

@@ -109,9 +109,10 @@ The slider on the extension sets the strictness, i.e., the threshold value for t
 To stop the extension, move the slider to the extreme left, or toggle all the switches to the "off" state.
 
 <p align="center">
-    <img src="./assets/demo-reddit.png" width="600">
+    <img src="./assets/demo-insta.png" width="408">
+    <img src="./assets/demo-reddit.png" width="400">
     <br />
-    The screenshot above shows the extension in action.
+    The screenshots above shows the extension in action.
 </p>
 
 To test the extension, you can visit our [Instagram Post](https://www.instagram.com/p/CQnJy2jLwEb/). As of 27 July 2021, the "text filtering" feature of the extension works only on Instagram posts and comments. However, the "image filtering" feature works for on all websites.
