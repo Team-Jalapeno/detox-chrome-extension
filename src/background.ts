@@ -6,10 +6,22 @@ const detoxReport = () => {
   });
 };
 
+const detoxUnreport = () => {
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome.tabs.sendMessage(tabs[0].id!, { data: 'start-unreport-overlay' });
+  });
+}
+
 chrome.contextMenus.create({
   title: 'Report to Detox',
   contexts: ['all'],
   onclick: detoxReport,
+});
+
+chrome.contextMenus.create({
+  title: 'Unreport to Detox',
+  contexts: ['all'],
+  onclick: detoxUnreport,
 });
 
 const uid = nanoid(16);

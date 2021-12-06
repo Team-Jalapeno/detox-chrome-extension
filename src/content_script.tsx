@@ -19,7 +19,6 @@ jQuery.fn.extend({
     let path; let
       node: any = this;
     while (node.length) {
-      console.log('node is');
       console.log(node);
       const realNode = node[0]; let
         { name } = realNode;
@@ -46,20 +45,23 @@ jQuery.fn.extend({
   },
 });
 
-const reportDetox = async (propName: string, path: string, selection: JQuery<HTMLImageElement>) => {
+const reportDetox = async (propName: string, path: string, selection: JQuery<HTMLImageElement>, type: string) => {
   // console.log($(event.target).prop('tagName'));
   // const selection = $(event.target).find('img');
   let contentType = 'text';
   console.log(path);
+  console.log('sending')
   // console.log($(event.target).find('img'));
   if (selection.length > 0 || propName === 'IMG') {
     // its an image
     contentType = 'image';
   }
 
+  // let URL = type === 'report' ? 'https://eng-hack.herokuapp.com/community/report' : 'https://eng-hack.herokuapp.com/community/unreport';
+  let URL = `https://eng-hack.herokuapp.com/community/${type === 'report' ? 'report' : 'unreport'}`;
   try {
     const config = await getConfig();
-    const response = await axios.post('https://eng-hack.herokuapp.com/community/report', {
+    const response = await axios.post(URL, {
       url: window.location.href,
       contentType,
       vote: 0,
@@ -71,8 +73,14 @@ const reportDetox = async (propName: string, path: string, selection: JQuery<HTM
     if (response.data.error) {
       alert(response.data.msg);
     } else {
-      blurFlaggedItem({ selector: path, contentType }, config.text, config.images);
-      alert('The content was flagged successfully!');
+
+      if (type === 'unreport') {
+        alert("Selected item has been unreported. Refresh page to see changes");
+      }
+      else {
+        blurFlaggedItem({ selector: path, contentType }, config.text, config.images);
+        alert('The content was flagged successfully!');
+      }
     }
   } catch (e) {
     console.log('error');
@@ -80,7 +88,8 @@ const reportDetox = async (propName: string, path: string, selection: JQuery<HTM
   }
 };
 
-const startOverlay = () => {
+const startOverlay = (type: string) => {
+  console.log('starting overlay');
   $('*').not('body, html').hover(function (e) {
     $(this).css('border', '1px solid #000');
     e.stopPropagation();
@@ -96,7 +105,7 @@ const startOverlay = () => {
     $(window).off('click');
 
     const selPath = getCssSelector((event.target as any), { selectors: ['tag', 'class'] });
-    reportDetox($(event.target).prop('tagName'), selPath, $(event.target).find('img'));
+    reportDetox($(event.target).prop('tagName'), selPath, $(event.target).find('img'), type);
     return false;
   });
 };
@@ -104,8 +113,13 @@ const startOverlay = () => {
 chrome.runtime.onMessage.addListener((msg) => {
   console.log(msg);
   switch (msg.data) {
+
+    case 'start-unreport-overlay':
+      startOverlay('unreport');
+      break;
+
     case 'start-overlay':
-      startOverlay();
+      startOverlay('report');
       break;
     default:
       break;

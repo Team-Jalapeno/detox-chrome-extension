@@ -357,13 +357,6 @@ const Popup = () => {
                   label="Videos"
                 />
               </FormGroup>
-              <FormHelperText className={classes.center}>
-                Built with
-                {' '}
-                <span style={{ color: 'red' }}>♥</span>
-                {' '}
-                by Team Jalapeno
-              </FormHelperText>
             </FormControl>
           </Grid>
         </Grid>
